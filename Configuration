@@ -1,0 +1,81 @@
+
+Creating Ansible server and node in a Docker images.
+
+
+
+Docker Installation On RedHat/CentoS Linux 
+ 1. Sudo su ( For root)
+2. Yum update –y (For updating our distribution with latest required packages)
+3. Yum install Docker –y
+4. Docker –version(for version checking )
+
+After Installation Of Docker 
+	Creation Of docker Container with Help of Images.
+
+Command For creation of 1st Container : Docker run –itd  --name ansible_master ubuntu  /bin/bash
+Command For creation of 2nd Container : Docker run –itd  --name Target1 ubuntu  /bin/bash
+Command For creation of 3rd Container : Docker run –itd  --name Target2  ubuntu  /bin/bash
+
+ 	Note : Here These two Containers with name Target1and Target2 will be the one on which we will be running are Ansible playbooks. 
+
+ 	Now Creating Our Ansible Server in One of the Container
+
+•	The 1st Container ansible_master  will be our ansible server on which  we will creating playbooks.
+
+Now Installing Ansible on Docker container
+
+	Yum update –y
+	Yum install vim python2 openssh-client ansible iputils-ping –y
+[ Vim is a file editor , python2 is python dependencies, ansible is automation tool,iputils-ping is used for runnig ping command on distribution]
+	Exit 
+
+ 	Now , Enter into Container Target1
+	Docker exec –it target2 bash
+	Yum Update –y
+	Yum install vim python2 openssh-server iputils-ping –y
+(Now For using ssh we have to enable it by doing “PermitRootlogin Yes” in file sshd__config)
+	cd /etc/ssh
+	vi sshd_config
+•	Here in this file Uncomment the  Permitrootlogin prohibit password and then make its as  “PermitRootlogin yes”
+	Passwd root
+(Enter the password you  want for ssh connection )
+	Service ssh restart
+	Exit
+Now In target 2 Container ,
+	Docker exec –it Target2 bash
+(Follow the same steps as in Container Target1)
+
+Now in your linux machine after coming outside container 
+1.	Command -> Docker inspect target1           (Here copy the private ip of container target 1 and save it some             where on your local machine )  
+2.	Comamnd-> Docker inspect target2       (Same here copy and save)
+    Now Enter into ansible_master container 
+	Docker exec –it ansible_master bash
+	cd /etc/ansible
+	vi hosts
+(Now in this file Copying the things I have written , here I will place the Ip’s of my target nodes in different group just in case , might in future I want to enter more hosts , Remember above I have copy the Ip’s by doing Docker inspect )
+[demo]                                              #these are group names(demo and memo)
+172.17.0.3                                                                               -> This can be different in your case
+[memo]
+172.17.0.4    
+
+After Configuring  the Hosts file , Now Some ssh configuration
+	/etc/ansible
+	Ssh-keygen 
+(here keep pressing enter till all the things done , this is a passphrase generation process for ssh connection)
+	Ssh-copy-id root@(private_ip)      {Private ip of both target , repeatth command for 2nd Container}
+Above Command is use so that while switching between containers we don’t have to give password again and again.
+Now you can try ping each Containers to each other . You can also do ssh connection to both target nodes.
+  For that : ssh root@(private_ip) , Now you will enter into target container.
+ 
+
+	Here all the Configuration are Done We have Installed Docker on our machine and created three containers , from which one  container will act as ansible server and other two as ansible nodes.
+Now we can create Ansible playbook run on target nodes . 
+
+
+
+
+
+
+
+
+ 
