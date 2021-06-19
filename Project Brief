@@ -1,0 +1,5 @@
+Here I have installed Docker on a Aws Ec2 instance and created three images .
+Installed ansible and done configuration for it to act as a ansible server.
+Now installing required dependencies and packages in other two docker images
+Also configure ssh on  the two target nodes.
+now Create Ansible playbooks. 
