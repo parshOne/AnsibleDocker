@@ -1,0 +1,8 @@
+  - name: copy
+    hosts: demo
+    tasks:
+         - name: copy
+           copy:
+                   src: /usr/index.html
+                   dest: /usr/share/nginx/html/index.html
+                   remote_src: false
