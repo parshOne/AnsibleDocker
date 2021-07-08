@@ -4,7 +4,7 @@
      connection: ssh
      tasks: 
           - name: add commands
-            command : mkdir '{{item}}' 
+            command: mkdir '{{item}}' 
             with items:
                      - test
                      - english
