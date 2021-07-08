@@ -1,0 +1,13 @@
+---
+   - hosts: demo
+     become: yes
+     connection: ssh
+     tasks: 
+          - name: add commands
+            command : mkdir '{{item}}' 
+            with items:
+                     - test
+                     - english
+                     - maths
+                     - science
+            
