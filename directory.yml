@@ -5,7 +5,7 @@
      tasks: 
           - name: add commands
             command: mkdir '{{item}}' 
-            with items:
+            with_items:
                      - test
                      - english
                      - maths
