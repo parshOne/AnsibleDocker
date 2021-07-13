@@ -1,0 +1,10 @@
+--- #playbook
+   - hosts: demo
+     tasks:
+             - name: add user  on nodes
+               user: name='{{item}}' state=present
+               with_items:
+                       - parvesh
+                       - deepak
+                       - raj
+                       - aman
