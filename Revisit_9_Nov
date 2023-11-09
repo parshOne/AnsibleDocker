@@ -1,0 +1,1 @@
+Docker run –itd  --name ansible_master ubuntu  /bin/bash
